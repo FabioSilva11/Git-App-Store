@@ -1,0 +1,18 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="50dp"
+    android:height="50dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+    <path
+        android:fillColor="@color/siyuan_red"
+        android:pathData="M10,14L27,30V54L10,42Z" />
+    <path
+        android:fillColor="@color/siyuan_dark"
+        android:pathData="M27,14L44,30V54L27,42Z" />
+    <path
+        android:fillColor="@color/siyuan_red"
+        android:pathData="M44,14L54,23V54L44,47Z" />
+    <path
+        android:fillColor="@color/siyuan_dark"
+        android:pathData="M10,14L27,30L27,42L10,26Z" />
+</vector>

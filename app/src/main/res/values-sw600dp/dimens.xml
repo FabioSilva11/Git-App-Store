@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="screen_padding_horizontal">14dp</dimen>
+    <dimen name="screen_padding_top">10dp</dimen>
+    <dimen name="section_gap">8dp</dimen>
+    <dimen name="search_height">42dp</dimen>
+    <dimen name="search_radius">16dp</dimen>
+    <dimen name="card_radius">16dp</dimen>
+    <dimen name="card_padding">3dp</dimen>
+    <dimen name="app_icon_size">24dp</dimen>
+    <dimen name="chip_radius">14dp</dimen>
+    <dimen name="button_height">36dp</dimen>
+    <dimen name="button_radius">18dp</dimen>
+    <dimen name="bottom_nav_height">48dp</dimen>
+    <dimen name="home_max_content_width">720dp</dimen>
+</resources>

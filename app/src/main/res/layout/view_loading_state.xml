@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="?attr/themeSurfaceCard"
+    app:cardCornerRadius="22dp"
+    app:cardElevation="4dp"
+    app:strokeColor="?attr/themeBorder"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="14dp">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/loadingProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            app:indicatorColor="?attr/themePrimary"
+            app:indicatorSize="38dp"
+            app:trackColor="?attr/themeSurfaceAccent"
+            app:trackThickness="4dp" />
+
+        <TextView
+            android:id="@+id/loadingTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="@string/loading_repos"
+            android:textColor="?attr/themeTextPrimary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="Carregando apps..." />
+
+        <TextView
+            android:id="@+id/loadingSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:gravity="center"
+            android:lineSpacingExtra="1dp"
+            android:text="@string/loading_recent_first"
+            android:textColor="?attr/themeTextSecondary"
+            android:textSize="10sp"
+            tools:text="Mais recentes primeiro" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
+

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="themePaper" format="color" />
+    <attr name="themeSurfaceCard" format="color" />
+    <attr name="themeSurfaceSoft" format="color" />
+    <attr name="themeSurfaceAccent" format="color" />
+    <attr name="themePrimary" format="color" />
+    <attr name="themePrimaryDark" format="color" />
+    <attr name="themeTextPrimary" format="color" />
+    <attr name="themeTextSecondary" format="color" />
+    <attr name="themeTextTertiary" format="color" />
+    <attr name="themeBorder" format="color" />
+    <attr name="themeDivider" format="color" />
+    <attr name="themeIcon" format="color" />
+    <attr name="themeOnPrimary" format="color" />
+    <attr name="themeDanger" format="color" />
+</resources>

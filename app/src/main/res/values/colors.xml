@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="ink">#111713</color>
+    <color name="leaf">#2F6B4F</color>
+    <color name="leaf_dark">#163E2A</color>
+    <color name="sage">#AFCFB8</color>
+    <color name="mist">#EEF5EF</color>
+    <color name="paper">#F7F7F5</color>
+    <color name="line">#E4E7E2</color>
+    <color name="sun">#F1B94E</color>
+    <color name="surface">#FAFAF8</color>
+    <color name="surface_card">#FFFFFFFF</color>
+    <color name="surface_soft">#F0F3F0</color>
+    <color name="surface_green_soft">#E9F1EB</color>
+    <color name="text_primary">#121815</color>
+    <color name="text_secondary">#6F7478</color>
+    <color name="text_tertiary">#8C9290</color>
+    <color name="border_soft">#E6E8E4</color>
+    <color name="divider_soft">#ECEEEA</color>
+    <color name="shadow_tint">#14000000</color>
+    <color name="icon_dark">#30363A</color>
+    <color name="app_icon_dark">#0D0E0E</color>
+    <color name="app_icon_light">#EEF5EF</color>
+    <color name="siyuan_red">#E73345</color>
+    <color name="siyuan_dark">#30363A</color>
+</resources>

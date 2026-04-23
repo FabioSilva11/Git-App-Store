@@ -1,0 +1,146 @@
+<resources>
+    <style name="Base.Theme.GitAppStore" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="colorPrimary">?attr/themePrimary</item>
+        <item name="colorPrimaryDark">?attr/themePrimaryDark</item>
+        <item name="colorAccent">?attr/themePrimary</item>
+        <item name="colorSurface">?attr/themeSurfaceCard</item>
+        <item name="colorOnSurface">?attr/themeTextPrimary</item>
+        <item name="android:windowBackground">?attr/themePaper</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:navigationBarColor">?attr/themePaper</item>
+        <item name="android:statusBarColor">?attr/themePaper</item>
+    </style>
+
+    <style name="Theme.GitAppStore" parent="Theme.GitAppStore.System" />
+
+    <style name="Theme.GitAppStore.Light" parent="Base.Theme.GitAppStore">
+        <item name="themePaper">#F7F7F5</item>
+        <item name="themeSurfaceCard">#FFFFFFFF</item>
+        <item name="themeSurfaceSoft">#F0F3F0</item>
+        <item name="themeSurfaceAccent">#E9F1EB</item>
+        <item name="themePrimary">#2F6B4F</item>
+        <item name="themePrimaryDark">#163E2A</item>
+        <item name="themeTextPrimary">#121815</item>
+        <item name="themeTextSecondary">#6F7478</item>
+        <item name="themeTextTertiary">#8C9290</item>
+        <item name="themeBorder">#E6E8E4</item>
+        <item name="themeDivider">#ECEEEA</item>
+        <item name="themeIcon">#30363A</item>
+        <item name="themeOnPrimary">#FFFFFFFF</item>
+        <item name="themeDanger">#E73345</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="Theme.GitAppStore.System" parent="Theme.GitAppStore.Light" />
+
+    <style name="Theme.GitAppStore.Dark" parent="Base.Theme.GitAppStore">
+        <item name="themePaper">#0B0D10</item>
+        <item name="themeSurfaceCard">#14181C</item>
+        <item name="themeSurfaceSoft">#10151A</item>
+        <item name="themeSurfaceAccent">#102018</item>
+        <item name="themePrimary">#5CC18F</item>
+        <item name="themePrimaryDark">#2E7B59</item>
+        <item name="themeTextPrimary">#F3F6F8</item>
+        <item name="themeTextSecondary">#AFB8C0</item>
+        <item name="themeTextTertiary">#7E8994</item>
+        <item name="themeBorder">#242B33</item>
+        <item name="themeDivider">#1A2027</item>
+        <item name="themeIcon">#EAF0F5</item>
+        <item name="themeOnPrimary">#08120D</item>
+        <item name="themeDanger">#FF6A80</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <style name="Theme.GitAppStore.Amoled.Base" parent="Base.Theme.GitAppStore">
+        <item name="themePaper">#000000</item>
+        <item name="themeSurfaceCard">#0A0B0F</item>
+        <item name="themeSurfaceSoft">#0D1016</item>
+        <item name="themeSurfaceAccent">#11131A</item>
+        <item name="themeTextPrimary">#F7F8FC</item>
+        <item name="themeTextSecondary">#A7ADBD</item>
+        <item name="themeTextTertiary">#7C8294</item>
+        <item name="themeBorder">#181B24</item>
+        <item name="themeDivider">#11141C</item>
+        <item name="themeIcon">#EEF1F7</item>
+        <item name="themeOnPrimary">#FFFFFFFF</item>
+        <item name="themeDanger">#FF5C7A</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <style name="Theme.GitAppStore.Amoled.Black" parent="Theme.GitAppStore.Amoled.Base">
+        <item name="themePrimary">#E6E6EA</item>
+        <item name="themePrimaryDark">#A3A3AC</item>
+        <item name="themeSurfaceAccent">#101114</item>
+        <item name="themeOnPrimary">#000000</item>
+    </style>
+
+    <style name="Theme.GitAppStore.Amoled.Blue" parent="Theme.GitAppStore.Amoled.Base">
+        <item name="themePrimary">#4AA8FF</item>
+        <item name="themePrimaryDark">#1A66C9</item>
+        <item name="themeSurfaceAccent">#071726</item>
+    </style>
+
+    <style name="Theme.GitAppStore.Amoled.Pink" parent="Theme.GitAppStore.Amoled.Base">
+        <item name="themePrimary">#FF63B8</item>
+        <item name="themePrimaryDark">#D63188</item>
+        <item name="themeSurfaceAccent">#260816</item>
+    </style>
+
+    <style name="Theme.GitAppStore.Amoled.Emerald" parent="Theme.GitAppStore.Amoled.Base">
+        <item name="themePrimary">#31D98B</item>
+        <item name="themePrimaryDark">#138C55</item>
+        <item name="themeSurfaceAccent">#071D14</item>
+    </style>
+
+    <style name="Theme.GitAppStore.Amoled.Violet" parent="Theme.GitAppStore.Amoled.Base">
+        <item name="themePrimary">#A77BFF</item>
+        <item name="themePrimaryDark">#6E4BD8</item>
+        <item name="themeSurfaceAccent">#151028</item>
+    </style>
+
+    <style name="Theme.GitAppStore.Amoled.Orange" parent="Theme.GitAppStore.Amoled.Base">
+        <item name="themePrimary">#FF8A3D</item>
+        <item name="themePrimaryDark">#D85A12</item>
+        <item name="themeSurfaceAccent">#251308</item>
+    </style>
+
+    <style name="Theme.GitAppStore.Amoled.Gold" parent="Theme.GitAppStore.Amoled.Base">
+        <item name="themePrimary">#F6C445</item>
+        <item name="themePrimaryDark">#C99200</item>
+        <item name="themeSurfaceAccent">#241B06</item>
+        <item name="themeOnPrimary">#201500</item>
+    </style>
+
+    <style name="Theme.GitAppStore.Amoled.Ruby" parent="Theme.GitAppStore.Amoled.Base">
+        <item name="themePrimary">#FF5C7A</item>
+        <item name="themePrimaryDark">#D92B4D</item>
+        <item name="themeSurfaceAccent">#240811</item>
+    </style>
+
+    <style name="Theme.GitAppStore.Amoled.Cyan" parent="Theme.GitAppStore.Amoled.Base">
+        <item name="themePrimary">#3DD9E8</item>
+        <item name="themePrimaryDark">#1493A0</item>
+        <item name="themeSurfaceAccent">#081D21</item>
+        <item name="themeOnPrimary">#001417</item>
+    </style>
+
+    <style name="Theme.GitAppStore.Amoled.Graphite" parent="Theme.GitAppStore.Amoled.Base">
+        <item name="themePrimary">#B9C2D0</item>
+        <item name="themePrimaryDark">#788396</item>
+        <item name="themeSurfaceAccent">#11151C</item>
+        <item name="themeOnPrimary">#0A0D12</item>
+    </style>
+
+    <style name="Theme.GitAppStore.ImageViewer" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="colorPrimary">#FFFFFF</item>
+        <item name="colorSurface">#000000</item>
+        <item name="colorOnSurface">#FFFFFF</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:navigationBarColor">#000000</item>
+        <item name="android:statusBarColor">#000000</item>
+        <item name="android:windowBackground">#000000</item>
+    </style>
+</resources>
