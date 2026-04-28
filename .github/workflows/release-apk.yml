@@ -1,39 +1,33 @@
-name: Build APK and Publish Release
+name: Android CI
 
 on:
   push:
     branches:
       - main
+    paths:
+      - ".github/workflows/**"
+      - "app/**"
+      - "gradle/**"
+      - "build.gradle.kts"
+      - "gradle.properties"
+      - "gradlew"
+      - "gradlew.bat"
+      - "settings.gradle.kts"
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  build-and-release:
-    name: Build and release APK
+  build:
+    name: Build APK
     runs-on: ubuntu-latest
+    outputs:
+      short_sha: ${{ steps.set_sha.outputs.short_sha }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Set release metadata
-        id: meta
-        shell: bash
-        run: |
-          BRANCH="${GITHUB_REF_NAME}"
-          SAFE_BRANCH="$(printf '%s' "$BRANCH" | tr '/[:space:]' '-' | tr -cd 'A-Za-z0-9._-')"
-          SHORT_SHA="${GITHUB_SHA::7}"
-          TAG="${SAFE_BRANCH}-build-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${SHORT_SHA}"
-          RELEASE_NAME="Development Build #${GITHUB_RUN_NUMBER} (${SHORT_SHA})"
-          RUN_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-
-          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
-          echo "release_name=$RELEASE_NAME" >> "$GITHUB_OUTPUT"
-          echo "asset_name=GitAppStore-${SAFE_BRANCH}-${SHORT_SHA}-run${GITHUB_RUN_NUMBER}.apk" >> "$GITHUB_OUTPUT"
-          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
-          echo "short_sha=$SHORT_SHA" >> "$GITHUB_OUTPUT"
-          echo "run_url=$RUN_URL" >> "$GITHUB_OUTPUT"
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -50,52 +44,72 @@ jobs:
       - name: Build debug APK
         run: ./gradlew :app:assembleDebug
 
-      - name: Prepare APK asset
-        id: asset
+      - name: Set short SHA
+        id: set_sha
         shell: bash
-        env:
-          ASSET_NAME: ${{ steps.meta.outputs.asset_name }}
-        run: |
-          mkdir -p release-assets
-          cp app/build/outputs/apk/debug/app-debug.apk "release-assets/${ASSET_NAME}"
-          echo "path=release-assets/${ASSET_NAME}" >> "$GITHUB_OUTPUT"
+        run: echo "short_sha=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
 
-      - name: Create or update GitHub Release
+      - name: Rename APK with commit hash
         shell: bash
+        run: |
+          mv app/build/outputs/apk/debug/app-debug.apk \
+             app/build/outputs/apk/debug/app-debug-${{ steps.set_sha.outputs.short_sha }}.apk
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-debug-${{ steps.set_sha.outputs.short_sha }}
+          path: app/build/outputs/apk/debug/app-debug-${{ steps.set_sha.outputs.short_sha }}.apk
+
+  publishRelease:
+    name: Publish APK to GitHub Releases
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Download APK artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: apk-debug-${{ needs.build.outputs.short_sha }}
+          path: ./release-assets
+
+      - name: Set release metadata
+        id: release_meta
+        shell: bash
+        run: |
+          release_tag="main-build-${{ github.run_id }}-${{ github.run_attempt }}-${{ needs.build.outputs.short_sha }}"
+          asset_name="GitAppStore-main-${{ needs.build.outputs.short_sha }}-run${{ github.run_number }}.apk"
+
+          echo "release_tag=${release_tag}" >> "$GITHUB_OUTPUT"
+          echo "asset_name=${asset_name}" >> "$GITHUB_OUTPUT"
+
+          cp ./release-assets/app-debug-${{ needs.build.outputs.short_sha }}.apk \
+             "./release-assets/${asset_name}"
+
+      - name: Write release notes
+        shell: bash
+        run: |
+          cat <<EOF > release-notes.md
+          Automated development build for commit \`${{ needs.build.outputs.short_sha }}\`.
+
+          - Branch: \`${{ github.ref_name }}\`
+          - Commit: \`${{ github.sha }}\`
+          - Run number: \`${{ github.run_number }}\`
+          - Workflow run: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+          This release was generated automatically from the latest successful CI build for this run on \`${{ github.ref_name }}\`.
+          EOF
+
+      - name: Create release for this build
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ steps.meta.outputs.tag }}
-          RELEASE_NAME: ${{ steps.meta.outputs.release_name }}
-          ASSET_NAME: ${{ steps.meta.outputs.asset_name }}
-          APK_PATH: ${{ steps.asset.outputs.path }}
-          BRANCH: ${{ steps.meta.outputs.branch }}
-          SHORT_SHA: ${{ steps.meta.outputs.short_sha }}
-          RUN_URL: ${{ steps.meta.outputs.run_url }}
+        shell: bash
         run: |
-          NOTES="$(cat <<EOF
-          Automated development build for commit \`${SHORT_SHA}\`.
-
-          - Branch: \`${BRANCH}\`
-          - Commit: \`${GITHUB_SHA}\`
-          - Run number: \`${GITHUB_RUN_NUMBER}\`
-          - Workflow run: ${RUN_URL}
-
-          This prerelease was generated automatically from the latest successful CI build for this run on \`${BRANCH}\`.
-          EOF
-          )"
-
-          if gh release view "$TAG" > /dev/null 2>&1; then
-            gh release edit "$TAG" \
-              --title "$RELEASE_NAME" \
-              --notes "$NOTES" \
-              --target "$GITHUB_SHA" \
-              --latest
-            gh release upload "$TAG" "$APK_PATH" --clobber
-            exit 0
-          fi
-
-          gh release create "$TAG" "$APK_PATH" \
-            --title "$RELEASE_NAME" \
-            --notes "$NOTES" \
-            --target "$GITHUB_SHA" \
+          gh release create "${{ steps.release_meta.outputs.release_tag }}" \
+            -R "${GITHUB_REPOSITORY}" \
+            "./release-assets/${{ steps.release_meta.outputs.asset_name }}" \
+            --title "Development Build #${{ github.run_number }} (${{ needs.build.outputs.short_sha }})" \
+            --notes-file release-notes.md \
+            --target "${GITHUB_SHA}" \
             --latest
