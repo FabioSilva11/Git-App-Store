@@ -89,7 +89,6 @@ jobs:
               --title "$RELEASE_NAME" \
               --notes "$NOTES" \
               --target "$GITHUB_SHA" \
-              --prerelease \
               --latest
             gh release upload "$TAG" "$APK_PATH" --clobber
             exit 0
@@ -99,5 +98,4 @@ jobs:
             --title "$RELEASE_NAME" \
             --notes "$NOTES" \
             --target "$GITHUB_SHA" \
-            --prerelease \
             --latest
