@@ -21,13 +21,19 @@ jobs:
         id: meta
         shell: bash
         run: |
+          BRANCH="${GITHUB_REF_NAME}"
+          SAFE_BRANCH="$(printf '%s' "$BRANCH" | tr '/[:space:]' '-' | tr -cd 'A-Za-z0-9._-')"
           SHORT_SHA="${GITHUB_SHA::7}"
-          TAG="build-${SHORT_SHA}"
-          RELEASE_NAME="Build ${SHORT_SHA}"
+          TAG="${SAFE_BRANCH}-build-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-${SHORT_SHA}"
+          RELEASE_NAME="Development Build #${GITHUB_RUN_NUMBER} (${SHORT_SHA})"
+          RUN_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
 
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "release_name=$RELEASE_NAME" >> "$GITHUB_OUTPUT"
-          echo "asset_name=git-app-store-${TAG}-debug.apk" >> "$GITHUB_OUTPUT"
+          echo "asset_name=GitAppStore-${SAFE_BRANCH}-${SHORT_SHA}-run${GITHUB_RUN_NUMBER}.apk" >> "$GITHUB_OUTPUT"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          echo "short_sha=$SHORT_SHA" >> "$GITHUB_OUTPUT"
+          echo "run_url=$RUN_URL" >> "$GITHUB_OUTPUT"
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -60,14 +66,38 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.meta.outputs.tag }}
           RELEASE_NAME: ${{ steps.meta.outputs.release_name }}
+          ASSET_NAME: ${{ steps.meta.outputs.asset_name }}
           APK_PATH: ${{ steps.asset.outputs.path }}
+          BRANCH: ${{ steps.meta.outputs.branch }}
+          SHORT_SHA: ${{ steps.meta.outputs.short_sha }}
+          RUN_URL: ${{ steps.meta.outputs.run_url }}
         run: |
+          NOTES="$(cat <<EOF
+          Automated development build for commit \`${SHORT_SHA}\`.
+
+          - Branch: \`${BRANCH}\`
+          - Commit: \`${GITHUB_SHA}\`
+          - Run number: \`${GITHUB_RUN_NUMBER}\`
+          - Workflow run: ${RUN_URL}
+
+          This prerelease was generated automatically from the latest successful CI build for this run on \`${BRANCH}\`.
+          EOF
+          )"
+
           if gh release view "$TAG" > /dev/null 2>&1; then
+            gh release edit "$TAG" \
+              --title "$RELEASE_NAME" \
+              --notes "$NOTES" \
+              --target "$GITHUB_SHA" \
+              --prerelease \
+              --latest
             gh release upload "$TAG" "$APK_PATH" --clobber
             exit 0
           fi
 
           gh release create "$TAG" "$APK_PATH" \
             --title "$RELEASE_NAME" \
-            --notes "APK debug gerado automaticamente pelo GitHub Actions." \
-            --target "$GITHUB_SHA"
+            --notes "$NOTES" \
+            --target "$GITHUB_SHA" \
+            --prerelease \
+            --latest
